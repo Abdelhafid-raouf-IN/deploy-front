@@ -1,0 +1,37 @@
+/* styles.css */
+.column-enter {
+  opacity: 0;
+  transform: translateY(50px); /* Animation de départ (par exemple, déplacement vers le bas) */
+}
+
+.column-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out; /* Animation d'entrée avec transition */
+}
+
+.column-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.column-exit-active {
+  opacity: 0;
+  transform: translateY(-50px); /* Animation de sortie (par exemple, déplacement vers le haut) */
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out; /* Animation de sortie avec transition */
+}
+.max-w-3xl {
+  max-width: 80rem;
+}
+.fixed-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999; /* Adjust as necessary */
+  background-color: #ffffff; /* Replace with your desired background color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for depth */
+}
+.px-6 {
+  padding-top: 1.1rem;
+}
