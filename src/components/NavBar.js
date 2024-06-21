@@ -41,6 +41,7 @@ const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotif
     { name: 'Test-All Apis', href: '/testallapis', current: false },
     { name: 'Calendar', href: '/calendar', current: false },
     { name: 'Teams', href: '/teams', current: false },
+    { name: 'Projet', href: '/projet', current: false },
   ];
 
   function classNames(...classes) {
