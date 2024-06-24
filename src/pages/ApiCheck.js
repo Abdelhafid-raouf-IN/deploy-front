@@ -1,135 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { TransitionGroup, CSSTransition } from 'react-transition-group'; // Importer TransitionGroup et CSSTransition depuis react-transition-group
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
 const CheckApi = () => {
-  const apiEndpoints = [
-    {
-      name: 'API 1',
-      url: 'https://fakestoreapi.com',
-      environment: 'Production'
-    },
-    {
-      name: 'API 2',
-      url: 'https://fakestoreapi.dev',
-      environment: 'Dev'
-    },
-    {
-      name: 'API 3',
-      url: 'https://fakestoreapi.com',
-      environment: 'Production'
-    },
-    {
-      name: 'API 4',
-      url: 'https://fakestoreapi.com',
-      environment: 'Dev'
-    },
-    {
-      name: 'API 5',
-      url: 'https://fakestoreapi.co',
-      environment: 'Production'
-    },
-    {
-      name: 'API 6',
-      url: 'https://fakestoreapi.dev',
-      environment: 'Dev'
-    },
-    {
-      name: 'API 7',
-      url: 'https://fakestoreapi.com',
-      environment: 'Production'
-    },
-    {
-      name: 'API 8',
-      url: 'https://fakestoreapi.dev',
-      environment: 'Dev'
-    },
-    {
-      name: 'API 9',
-      url: 'https://fakestoreapi.com',
-      environment: 'Production'
-    },
-    {
-      name: 'API 10',
-      url: 'https://fakestoreapi.com',
-      environment: 'Dev'
-    },
-    {
-      name: 'API 11',
-      url: 'https://fakestoreapi.co',
-      environment: 'Production'
-    },
-    {
-      name: 'API 12',
-      url: 'https://fakestoreapi.com',
-      environment: 'Dev'
-    },
-    {
-      name: 'API 13',
-      url: 'https://fakestoreapi.com',
-      environment: 'Production'
-    },
-    {
-      name: 'API 14',
-      url: 'https://fakestoreapi.dev',
-      environment: 'Dev'
-    },
-    {
-      name: 'API 15',
-      url: 'https://fakestoreapi.com',
-      environment: 'Production'
-    },
-    {
-      name: 'API 16',
-      url: 'https://fakestoreapi.dev',
-      environment: 'Dev'
-    },
-    {
-      name: 'API 17',
-      url: 'https://fakestoreapi.com',
-      environment: 'Production'
-    },
-    {
-      name: 'API 18',
-      url: 'https://fakestoreapi.dev',
-      environment: 'Dev'
-    },
-    {
-      name: 'API 19',
-      url: 'https://fakestoreapi.com',
-      environment: 'Production'
-    },
-    {
-      name: 'API 20',
-      url: 'https://fakestoreapi.com',
-      environment: 'Dev'
-    },
-    {
-      name: 'API 21',
-      url: 'https://fakestoreapi.co',
-      environment: 'Production'
-    },
-    {
-      name: 'API 22',
-      url: 'https://fakestoreapi.dev',
-      environment: 'Dev'
-    },
-    {
-      name: 'API 23',
-      url: 'https://fakestoreapi.com',
-      environment: 'Production'
-    },
-    {
-      name: 'API 24',
-      url: 'https://fakestoreapi.com',
-      environment: 'Production'
-    },
-  
-
-    // Ajoutez d'autres endpoints d'API selon vos besoins
-  ];
-
-  const [filter, setFilter] = useState('all');
   const [apiStatuses, setApiStatuses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
@@ -138,20 +13,32 @@ const CheckApi = () => {
   const [showNextButton, setShowNextButton] = useState(true);
   const [showPrevButton, setShowPrevButton] = useState(false);
 
-  useEffect(() => { 
-    const fetchData = async () => {
-      const statuses = [];
-      for (let api of apiEndpoints) {
-        if (filter !== 'all' && api.environment.toLowerCase() !== filter.toLowerCase()) continue;
+  const [totalApis, setTotalApis] = useState(0);
+  const [availableApis, setAvailableApis] = useState(0);
+  const [unavailableApis, setUnavailableApis] = useState(0);
 
-        const apiStatus = await checkApiStatus(api.url);
-        statuses.push({ ...api, status: apiStatus });
+  useEffect(() => {
+    const fetchApiEndpoints = async () => {
+      try {
+        const response = await axios.get('http://localhost:9090/api/auth/endpoints'); // Replace with your backend API endpoint
+        const endpoints = response.data;
+        const statuses = await Promise.all(endpoints.map(async (endpoint) => {
+          const status = await checkApiStatus(endpoint.url);
+          return { ...endpoint, status };
+        }));
+        setApiStatuses(statuses);
+
+        // Update global statistics
+        setTotalApis(statuses.length);
+        setAvailableApis(statuses.filter(api => api.status).length);
+        setUnavailableApis(statuses.filter(api => !api.status).length);
+      } catch (error) {
+        console.error('Error fetching API endpoints:', error);
       }
-      setApiStatuses(statuses);
     };
 
-    fetchData();
-  }, [filter]);
+    fetchApiEndpoints();
+  }, []);
 
   useEffect(() => {
     const filteredStatuses = apiStatuses.filter(
@@ -164,7 +51,7 @@ const CheckApi = () => {
     setStartIndex(0);
     setShowPrevButton(false);
     setShowNextButton(filteredStatuses.length > itemsPerPage);
-  }, [filter, searchQuery, apiStatuses, itemsPerPage]);
+  }, [searchQuery, apiStatuses, itemsPerPage]);
 
   const checkApiStatus = async (apiUrl) => {
     try {
@@ -206,21 +93,37 @@ const CheckApi = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-3">
-      <div className="flex flex-wrap -mx-4 mb-4">
-          {paginatedStatuses.map((api, index) => (
-              <div className="w-full md:w-1/4 lg:w-1/4 px-4 mb-4">
-                <div className="bg-white rounded-lg shadow-lg p-4">
-                  <p className="text-lg font-semibold text-gray-900 mb-2 truncate">{api.name}</p>
-                  <p className="text-sm text-gray-500 truncate">{api.url}</p>
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${api.status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                    <span className={`w-2 h-2 ${api.status ? 'bg-green-500' : 'bg-red-500'} rounded-full mr-1`}></span>
-                    {api.status ? `Available in ${api.environment}` : `Unavailable in ${api.environment}`}
-                  </span>
-                </div>
-              </div>
-          ))}
+      <div className="mb-4 bg-gradient-to-r from-blue-500 to-teal-500 text-white p-6 rounded-lg shadow-lg text-center border border-blue-700">
+        <div className="flex items-center justify-center mb-4">
+          <svg className="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 11c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zm0 4a5.002 5.002 0 00-4.582 2.757C7.255 19.11 8.581 20 10 20h4c1.419 0 2.745-.89 3.582-2.243A5.002 5.002 0 0012 15z"></path>
+          </svg>
+          <h2 className="text-3xl font-bold">Rapport Api informations</h2>
+        </div>
+        <p className="text-lg mb-2 flex items-center justify-center">
+          APIs Disponibles: {availableApis}
+          <span className="ml-2 inline-flex items-center justify-center w-3 h-3 bg-green-500 rounded-full" title="En ligne"></span>
+        </p>
+        <p className="text-lg flex items-center justify-center">
+          APIs Indisponibles: {unavailableApis}
+          <span className="ml-2 inline-flex items-center justify-center w-3 h-3 bg-red-500 rounded-full" title="Hors ligne"></span>
+        </p>
       </div>
-    
+
+      <div className="flex flex-wrap -mx-4 mb-4">
+        {paginatedStatuses.map((api, index) => (
+          <div className="w-full md:w-1/4 lg:w-1/4 px-4 mb-4" key={index}>
+            <div className="bg-white rounded-lg shadow-lg p-4">
+              <p className="text-lg font-semibold text-gray-900 mb-2 truncate">{api.name}</p>
+              <p className="text-sm text-gray-500 truncate">{api.url}</p>
+              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${api.status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                <span className={`w-2 h-2 ${api.status ? 'bg-green-500' : 'bg-red-500'} rounded-full mr-1`}></span>
+                {api.status ? `Available in ${api.environment}` : `Unavailable in ${api.environment}`}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
       <div className="flex justify-center mt-4 space-x-4">
         {showPrevButton && (
           <svg
@@ -241,7 +144,6 @@ const CheckApi = () => {
             <line x1="5" y1="12" x2="11" y2="6" />
           </svg>
         )}
-
         {showNextButton && (
           <svg
             onClick={handleNextClick}

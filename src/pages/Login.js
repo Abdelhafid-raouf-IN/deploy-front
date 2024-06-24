@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import axios from 'axios'; // Ajoutez cette ligne pour importer axios
-import ConfirmationPage from './ConfirmationPage'; // Importez votre page de confirmation si nécessaire
+import axios from 'axios'; 
+import ConfirmationPage from './ConfirmationPage'; 
 
 const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -16,8 +16,7 @@ const LoginPage = ({ onLogin }) => {
     try {
       const response = await axios.post('http://localhost:9090/api/auth/login', { username, password });
       if (response.data === "Login successful") {
-        // Assuming your backend returns a token or some kind of success message
-        const token = "some_generated_token"; // Replace this with actual token received
+        const token = "some_generated_token"; 
         onLogin(token);
         setIsConfirmed(true);
         setTimeout(() => {
@@ -33,7 +32,7 @@ const LoginPage = ({ onLogin }) => {
   };
 
   useEffect(() => {
-    return () => clearTimeout(); // Nettoyer le timer lorsque le composant est démonté
+    return () => clearTimeout(); 
   }, []);
 
   return (

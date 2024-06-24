@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SwaggerClient from 'swagger-client';
-import { apiDocs } from '../data/apiDocs';
 import '../style/styles.css'
 
 const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
@@ -28,23 +27,25 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
 
   useEffect(() => {
     const loadApis = async () => {
-      const apiData = [];
       try {
-        for (const apiDoc of apiDocs) {
+        const response = await axios.get('http://localhost:9090/api/auth/apis'); // Assurez-vous de remplacer avec l'URL correcte de votre backend
+        const apiData = response.data.map(async (apiDoc) => {
           const client = await SwaggerClient(apiDoc.url);
-          apiData.push({
+          return {
             name: apiDoc.name,
             client,
-            baseUrl: apiDoc.base_url,
-          });
-        }
-        setApis(apiData);
+            baseUrl: apiDoc.baseUrl
+          };
+        });
+        const resolvedApiData = await Promise.all(apiData);
+        setApis(resolvedApiData);
       } catch (error) {
         console.error('Error loading APIs:', error);
       }
     };
     loadApis();
   }, []);
+
 
   useEffect(() => {
     if (selectedApi) {
