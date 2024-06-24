@@ -1,26 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import axios from 'axios'; // Ajoutez cette ligne pour importer axios
 import ConfirmationPage from './ConfirmationPage'; // Importez votre page de confirmation si nécessaire
 
 const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isConfirmed, setIsConfirmed] = useState(false); // État pour la confirmation
+  const [isConfirmed, setIsConfirmed] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (username === 'admin' && password === 'admin') {
-      const token = 'votre_token_ici'; // Remplacez par la logique pour obtenir un vrai token
-      onLogin(token);
-      setIsConfirmed(true); // Confirmez la réussite de la connexion
-      setTimeout(() => {
-        navigate('/');
-      }, 1000); // Redirection vers la page d'accueil après 2 secondes
-    } else {
+    try {
+      const response = await axios.post('http://localhost:9090/api/auth/login', { username, password });
+      if (response.data === "Login successful") {
+        // Assuming your backend returns a token or some kind of success message
+        const token = "some_generated_token"; // Replace this with actual token received
+        onLogin(token);
+        setIsConfirmed(true);
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
+      } else {
+        setError('Nom d\'utilisateur ou mot de passe incorrect');
+      }
+    } catch (error) {
       setError('Nom d\'utilisateur ou mot de passe incorrect');
+      console.error('There was an error logging in!', error);
     }
   };
 
@@ -49,7 +57,7 @@ const LoginPage = ({ onLogin }) => {
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                  Username or Email
+                  Username
                 </label>
                 <div className="mt-2">
                   <input

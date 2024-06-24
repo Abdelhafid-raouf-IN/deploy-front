@@ -3,7 +3,6 @@ import axios from 'axios';
 import SwaggerClient from 'swagger-client';
 import { apiDocs } from '../data/apiDocs';
 import '../style/styles.css'
-import TokenSidebar from '../components/TokenSidebar'; // Importez le composant de sidebar mis à jour
 
 const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
   const [apis, setApis] = useState([]);
@@ -122,8 +121,10 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
   };
 
   return (
+      
     <div className="flex items-center justify-center px-4">
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl ">
+        
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold text-gray-900">API Test Form</h2>
           <span className="text-sm font-medium text-gray-600">Testeur d'API</span>
@@ -317,6 +318,7 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
         )}
       </div>
     </div>
+    
   );
 };
 
