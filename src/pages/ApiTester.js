@@ -21,8 +21,6 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
   const [responseResult, setResponseResult] = useState(null);
   const [responseHeaders, setResponseHeaders] = useState(null);
   const [curlCommand, setCurlCommand] = useState('');
-
-
   const [status, setstatus] = useState([]);
 
   useEffect(() => {
@@ -91,7 +89,7 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(paramValues[key])}`)
         .join('&');
       const fullUrl = `${url}?${queryString}`;
-
+  
       const options = {
         method,
         url: fullUrl,
@@ -105,12 +103,24 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
         },
       };
       const response = await axios(options);
+  
+      const testResult = {
+        apiName: selectedApi,
+        endpoint: selectedEndpoint,
+        method: selectedMethod,
+        status: response.status,
+        responseBody: JSON.stringify(response.data),
+        responseHeaders: JSON.stringify(response.headers),
+      };
+      console.log('Sending test result:', testResult); // Vérification dans la console du navigateur
+
+      await axios.post('http://localhost:9090/api/auth/save', testResult);
       setstatus(response.status);
       setResponseResult(response.data);
       setResponseHeaders(response.headers);
       const curlCmd = `curl -X ${method} ${fullUrl} -H 'Authorization: Bearer ${token}'`;
       setCurlCommand(curlCmd);
-
+  
       testPassNotification();
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -120,7 +130,7 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
       }
     }
   };
-
+  
   return (
       
     <div className="flex items-center justify-center px-4">

@@ -95,10 +95,10 @@ const CheckApi = () => {
     <div className="max-w-6xl mx-auto p-3">
       <div className="mb-4 bg-gradient-to-r from-blue-500 to-teal-500 text-white p-6 rounded-lg shadow-lg text-center border border-blue-700">
         <div className="flex items-center justify-center mb-4">
-          <svg className="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 11c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zm0 4a5.002 5.002 0 00-4.582 2.757C7.255 19.11 8.581 20 10 20h4c1.419 0 2.745-.89 3.582-2.243A5.002 5.002 0 0012 15z"></path>
-          </svg>
-          <h2 className="text-3xl font-bold">Rapport Api informations</h2>
+        <svg className="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3v18h18M7 12h2v6H7zM15 8h2v10h-2zM11 16h2v2h-2zM19 4h2v14h-2z" />
+        </svg>
+          <h2 className="text-3xl font-bold">statistics</h2>
         </div>
         <p className="text-lg mb-2 flex items-center justify-center">
           APIs Disponibles: {availableApis}
