@@ -1,21 +1,23 @@
 import React from 'react';
-import { Routes, Route,} from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import ApiTestForm from '../pages/ApiTester';
 import ApiTestResults from '../pages/ApiTestResults';
 import Navbar from '../components/NavBar';
-import CheckApi from '../pages/ApiCheck'; 
+import CheckApi from '../pages/ApiCheck';
 import ApiTestAll from '../pages/ApiTesterAll';
 import Banners from '../components/Banners';
+import LoginPage from '../pages/Login';
+import SignUpPage from '../pages/SignUpPage';
 
-export const AuthenticatedApp = ({ results, setResults, token, onLogout }) => {
-  // Fonction de notification de test réussi
+export const AuthenticatedApp = ({ results, setResults, onLogout }) => {
+  // Function for test pass notification
   const testPassNotification = () => {
-    console.log('Test passé avec succès');
+    console.log('Test passed successfully');
   };
 
-  // Fonction de notification de test échoué
+  // Function for test fail notification
   const testFailNotification = () => {
-    console.log('Le test a échoué');
+    console.log('Test failed');
   };
 
   return (
@@ -24,16 +26,15 @@ export const AuthenticatedApp = ({ results, setResults, token, onLogout }) => {
       <Banners />
       <div className="p-8">
         <Routes>
-        <Route path="/check-apis" element={<CheckApi />} />
-        <Route path="/testallapis" element={<ApiTestAll />} />
-        <Route
+          <Route path="/check-apis" element={<CheckApi />} />
+          <Route path="/testallapis" element={<ApiTestAll />} />
+          <Route
             path="/api-test"
             element={
               <>
-                <h1 className="text-3xl font-bold text-center mb-8">Testeur d'API</h1>
+                <h1 className="text-3xl font-bold text-center mb-8">API Tester</h1>
                 <ApiTestForm
                   setResults={setResults}
-                  token={token}
                   testPassNotification={testPassNotification}
                   testFailNotification={testFailNotification}
                 />
@@ -41,8 +42,31 @@ export const AuthenticatedApp = ({ results, setResults, token, onLogout }) => {
               </>
             }
           />
-            </Routes>
+        </Routes>
       </div>
     </>
   );
 };
+
+const AppRoutes = ({ isAuthenticated, handleLogin, results, setResults, handleLogout }) => (
+  <Routes>
+    <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+    <Route path="/signup" element={<SignUpPage />} />
+    <Route
+      path="/*"
+      element={
+        isAuthenticated ? (
+          <AuthenticatedApp
+            results={results}
+            setResults={setResults}
+            onLogout={handleLogout}
+          />
+        ) : (
+          <Navigate to="/login" />
+        )
+      }
+    />
+  </Routes>
+);
+
+export default AppRoutes;

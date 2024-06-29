@@ -43,8 +43,6 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
     };
     loadApis();
   }, []);
-
-
   useEffect(() => {
     if (selectedApi) {
       const api = apis.find((a) => a.name === selectedApi);

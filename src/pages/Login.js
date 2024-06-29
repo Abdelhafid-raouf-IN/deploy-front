@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios'; 
 import ConfirmationPage from './ConfirmationPage'; 
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
   const [error, setError] = useState('');
   const [isConfirmed, setIsConfirmed] = useState(false);
   const navigate = useNavigate();
@@ -16,8 +18,7 @@ const LoginPage = ({ onLogin }) => {
     try {
       const response = await axios.post('http://localhost:9090/api/auth/login', { username, password });
       if (response.data === "Login successful") {
-        const token = "some_generated_token"; 
-        onLogin(token);
+        onLogin();
         setIsConfirmed(true);
         setTimeout(() => {
           navigate('/');
@@ -30,10 +31,6 @@ const LoginPage = ({ onLogin }) => {
       console.error('There was an error logging in!', error);
     }
   };
-
-  useEffect(() => {
-    return () => clearTimeout(); 
-  }, []);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 bg-beige">
@@ -77,17 +74,28 @@ const LoginPage = ({ onLogin }) => {
                     Password
                   </label>
                 </div>
-                <div className="mt-2">
+                <div className="mt-2 relative">
                   <input
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
                     required
                     className="block w-full rounded-md border border-gray-300 py-2 px-3 text-gray-900 shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 focus:outline-none sm:text-sm sm:leading-6"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeSlashIcon className="h-5 w-5" aria-hidden="true" />
+                    ) : (
+                      <EyeSlashIcon className="h-5 w-5" aria-hidden="true" />
+                    )}
+                  </button>
                 </div>
               </div>
               <div>

@@ -29,7 +29,6 @@ const CheckApi = () => {
         setApiStatuses(statuses);
 
         // Update global statistics
-        setTotalApis(statuses.length);
         setAvailableApis(statuses.filter(api => api.status).length);
         setUnavailableApis(statuses.filter(api => !api.status).length);
       } catch (error) {

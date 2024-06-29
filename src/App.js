@@ -1,62 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from './pages/Login';
-import SignUpPage from './pages/SignUpPage';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
-import { AuthenticatedApp } from './routes/AppRoutes'; // Importer AuthenticatedApp depuis le router
+import AppRoutes from './routes/AppRoutes'; // Import AppRoutes from routes.js
 
 const App = () => {
   const [results, setResults] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [token, setToken] = useState('');
+  const [loading, setLoading] = useState(true); // State to manage loading
 
   useEffect(() => {
-    // Récupérer les informations d'authentification du localStorage
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
+    // Check if the user is authenticated
+    const storedAuth = localStorage.getItem('isAuthenticated');
+    if (storedAuth === 'true') {
       setIsAuthenticated(true);
-      setToken(storedToken);
     }
+    setLoading(false); // Set loading to false after checking
   }, []);
 
-  const handleLogin = (authToken) => {
-    // Vérifier si authToken est valide avant de mettre à jour l'état d'authentification
-    if (authToken) {
-      setIsAuthenticated(true);
-      setToken(authToken);
-      localStorage.setItem('token', authToken); // Sauvegarder le token dans le localStorage
-    }
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+    localStorage.setItem('isAuthenticated', 'true'); // Save authentication state in localStorage
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setToken('');
-    localStorage.removeItem('token'); // Supprimer le token du localStorage
+    localStorage.removeItem('isAuthenticated'); // Remove authentication state from localStorage
   };
+
+  if (loading) {
+    // Render a loading spinner or placeholder while checking authentication
+    return <div>Loading...</div>;
+  }
 
   return (
     <Router>
       <div className="min-h-screen bg-gray-100">
-        <Routes>
-          <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          {/* Utilisation de la route protégée définie dans le router.js */}
-          <Route
-            path="/*"
-            element={
-              isAuthenticated ? (
-                <AuthenticatedApp
-                  results={results}
-                  setResults={setResults}
-                  token={token}
-                  onLogout={handleLogout}
-                />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-        </Routes>
+        <AppRoutes
+          isAuthenticated={isAuthenticated}
+          handleLogin={handleLogin}
+          results={results}
+          setResults={setResults}
+          handleLogout={handleLogout}
+        />
       </div>
     </Router>
   );

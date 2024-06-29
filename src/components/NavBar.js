@@ -39,7 +39,7 @@ const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotif
     { name: 'Check-Apis', href: '/check-apis', current: false },
     { name: 'Test-Api', href: '/api-test', current: false },
     { name: 'Test-All Apis', href: '/testallapis', current: false },
-    { name: 'Calendar', href: '/dashboard', current: false },
+    { name: 'Calendar', href: '/calendar', current: false },
     { name: 'Teams', href: '/teams', current: false },
     { name: 'Projet', href: '/projet', current: false },
   ];
