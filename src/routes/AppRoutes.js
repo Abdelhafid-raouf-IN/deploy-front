@@ -8,6 +8,8 @@ import ApiTestAll from '../pages/ApiTesterAll';
 import Banners from '../components/Banners';
 import LoginPage from '../pages/Login';
 import SignUpPage from '../pages/SignUpPage';
+import Sidebar from '../components/Sidebar';
+import '../style/styles.css'; // Assurez-vous que votre fichier CSS est bien importé
 
 export const AuthenticatedApp = ({ results, setResults, onLogout }) => {
   // Function for test pass notification
@@ -24,6 +26,7 @@ export const AuthenticatedApp = ({ results, setResults, onLogout }) => {
     <>
       <Navbar isAuthenticated={true} onLogout={onLogout} />
       <Banners />
+      <Sidebar/>
       <div className="p-8">
         <Routes>
           <Route path="/check-apis" element={<CheckApi />} />
@@ -43,7 +46,7 @@ export const AuthenticatedApp = ({ results, setResults, onLogout }) => {
             }
           />
         </Routes>
-      </div>
+        </div>
     </>
   );
 };

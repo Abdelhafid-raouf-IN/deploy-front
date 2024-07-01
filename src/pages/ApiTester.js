@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SwaggerClient from 'swagger-client';
-import '../style/styles.css'
+import '../style/styles.css';
 
-const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
+const ApiTestForm = ({ selectedApiData, testPassNotification, testFailNotification }) => {
   const [apis, setApis] = useState([]);
   const [selectedApi, setSelectedApi] = useState('');
   const [endpoints, setEndpoints] = useState({});
@@ -43,6 +43,7 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
     };
     loadApis();
   }, []);
+
   useEffect(() => {
     if (selectedApi) {
       const api = apis.find((a) => a.name === selectedApi);
@@ -73,6 +74,14 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
     }
   }, [selectedEndpoint, selectedMethod, endpoints, baseApiUrl]);
 
+  useEffect(() => {
+    if (selectedApiData) {
+      setSelectedApi(selectedApiData.apiName);
+      setSelectedEndpoint(selectedApiData.endpoint);
+      setSelectedMethod(selectedApiData.method);
+    }
+  }, [selectedApiData]);
+
   const handleParamChange = (paramName, value) => {
     setParamValues({
       ...paramValues,
@@ -87,7 +96,7 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(paramValues[key])}`)
         .join('&');
       const fullUrl = `${url}?${queryString}`;
-  
+
       const options = {
         method,
         url: fullUrl,
@@ -101,7 +110,7 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
         },
       };
       const response = await axios(options);
-  
+
       const testResult = {
         apiName: selectedApi,
         endpoint: selectedEndpoint,
@@ -118,7 +127,7 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
       setResponseHeaders(response.headers);
       const curlCmd = `curl -X ${method} ${fullUrl} -H 'Authorization: Bearer ${token}'`;
       setCurlCommand(curlCmd);
-  
+
       testPassNotification();
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -128,11 +137,10 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
       }
     }
   };
-  
+
   return (
-      
     <div className="flex items-center justify-center px-4">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl ">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl">
         
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold text-gray-900">API Test Form</h2>
@@ -327,7 +335,6 @@ const ApiTestForm = ({ testPassNotification, testFailNotification }) => {
         )}
       </div>
     </div>
-    
   );
 };
 
