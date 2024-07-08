@@ -1,8 +1,10 @@
-import React, { useState, Fragment, useEffect  } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon } from '@heroicons/react/24/outline';
-import { Link } from 'react-router-dom';
+import { HomeIcon, ListBulletIcon, ArrowPathIcon, DocumentTextIcon, HeartIcon } from '@heroicons/react/24/outline'
 import '../style/styles.css'
+import { Link } from 'react-router-dom';  // Importation manquante
+
 
 const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotification }) => {
   const [notifications, setNotifications] = useState([]);
@@ -36,12 +38,12 @@ const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotif
   };
 
   const navigation = [
-    { name: 'Check-Apis', href: '/check-apis', current: false },
-    { name: 'Test-Api', href: '/api-test', current: false },
-    { name: 'Test-All Apis', href: '/testallapis', current: false },
-    { name: 'Calendar', href: '/calendar', current: false },
-    { name: 'Teams', href: '/teams', current: false },
-    { name: 'Projet', href: '/projet', current: false },
+    { name: 'Check-Apis', href: '/check-apis', icon: <HomeIcon className="h-6 w-6" />, current: false },
+    { name: 'Test-All Apis', href: '/testallapis', icon: <ListBulletIcon className="h-6 w-6" />, current: false },
+    { name: 'Test-Api', href: '/api-test', icon: <ArrowPathIcon className="h-6 w-6" />, current: false },
+    { name: 'Test-Results', href: '/testresults', icon: <DocumentTextIcon className="h-6 w-6" />, current: false },
+    { name: 'Health', href: '/health', icon: <HeartIcon className="h-6 w-6" />, current: false },
+
   ];
 
   function classNames(...classes) {
@@ -58,7 +60,7 @@ const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotif
       setIsScrolled(true);
     } else {
       setIsScrolled(false);
-    }
+    } 
   };
 
   // Attach scroll event listener when component mounts
@@ -79,7 +81,7 @@ const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotif
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden"></div>
                 <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex flex-shrink-0 items-center">
-                    <Link to="/">
+                    <Link to="/check-apis">
                       <img
                         src="https://societegenerale.africa/fileadmin/user_upload/logos/160_logo_corporatenew_fr.svg"
                         alt="Logo"
@@ -95,11 +97,12 @@ const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotif
                           to={item.href}
                           className={classNames(
                             item.current ? 'bg-gray-200 text-black' : 'text-gray-500 hover:bg-gray-200 hover:text-black',
-                            'rounded-md px-3 py-2 text-sm font-medium'
+                            'rounded-md px-3 py-2 text-sm font-medium flex items-center space-x-2'
                           )}
                           aria-current={item.current ? 'page' : undefined}
                         >
-                          {item.name}
+                          {item.icon}
+                          <span>{item.name}</span>
                         </Link>
                       ))}
                     </div>
@@ -130,14 +133,14 @@ const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotif
                       >
                         <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="#"
-                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                            >
-                              Notifictaion
-                            </a>
-                          )}
+                            {({ active }) => (
+                              <a
+                                href="#"
+                                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                              >
+                                Notification
+                              </a>
+                            )}
                           </Menu.Item>
                         </Menu.Items>
                       </Transition>

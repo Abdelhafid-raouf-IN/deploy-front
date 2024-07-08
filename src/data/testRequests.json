@@ -1,0 +1,116 @@
+{
+    "/pet": {
+        "post": {
+            "name": "Doggie",
+            "photoUrls": [
+                "string"
+            ]
+        },
+        "put": {
+            "id": 1,
+            "name": "Doggie",
+            "photoUrls": [
+                "string"
+            ]
+        }
+    },
+    "/pet/{petId}/uploadImage": {
+        "post": {
+            "additionalMetadata": "string",
+            "file": "string"
+        }
+    },
+    "/store/order": {
+        "post": {
+            "petId": 1,
+            "quantity": 1,
+            "shipDate": "2024-07-02T00:00:00.000Z",
+            "status": "placed",
+            "complete": true
+        }
+    },
+    "/user/createWithList": {
+        "post": [
+            {
+                "id": 1,
+                "username": "user1",
+                "firstName": "First",
+                "lastName": "Last",
+                "email": "email@example.com",
+                "password": "password",
+                "phone": "1234567890",
+                "userStatus": 1
+            }
+        ]
+    },
+    "/user": {
+        "post": {
+            "id": 1,
+            "username": "user1",
+            "firstName": "First",
+            "lastName": "Last",
+            "email": "email@example.com",
+            "password": "password",
+            "phone": "1234567890",
+            "userStatus": 1
+        }
+    },
+    "/user/createWithArray": {
+        "post": [
+            {
+                "id": 1,
+                "username": "user1",
+                "firstName": "First",
+                "lastName": "Last",
+                "email": "email@example.com",
+                "password": "password",
+                "phone": "1234567890",
+                "userStatus": 1
+            }
+        ]
+    },
+    "/pet/findByStatus": {
+        "get": null
+    },
+    "/pet/findByTags": {
+        "get": null
+    },
+    "/pet/{petId}": {
+        "get": null,
+        "post": {
+            "name": "updatedName",
+            "status": "available"
+        },
+        "delete": null
+    },
+    "/store/inventory": {
+        "get": null
+    },
+    "/store/order/{orderId}": {
+        "get": null,
+        "delete": null
+    },
+    "/user/{username}": {
+        "get": null,
+        "put": {
+            "id": 1,
+            "username": "updatedUser",
+            "firstName": "UpdatedFirst",
+            "lastName": "UpdatedLast",
+            "email": "updatedEmail@example.com",
+            "password": "updatedPassword",
+            "phone": "0987654321",
+            "userStatus": 1
+        },
+        "delete": {
+            "username": "user1"
+        }
+    },
+    "/user/login": {
+        "get": null
+    },
+    "/user/logout": {
+        "get": null
+    }
+    
+}

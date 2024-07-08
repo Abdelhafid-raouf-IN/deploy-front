@@ -48,3 +48,97 @@
   background-color: #ffffff; /* Replace with your desired background color */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for depth */
 }
+/* index.css ou App.css */
+
+.table-fixed {
+  table-layout: fixed;
+}
+
+.bg-green-300 {
+  background-color: #10B981;
+}
+
+.bg-yellow-300 {
+  background-color: #F59E0B;
+}
+
+.bg-blue-300 {
+  background-color: #3B82F6;
+}
+
+.bg-purple-300 {
+  background-color: #8B5CF6;
+}
+
+.bg-orange-300 {
+  background-color: #F97316;
+}
+
+.bg-pink-300 {
+  background-color: #EC4899;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.text-gray-900 {
+  color: #1f2937;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+.bg-gray-100 {
+  background-color: #f3f4f6;
+}
+
+.divide-y {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.divide-gray-200 {
+  --divide-opacity: 1;
+  border-color: rgba(229, 231, 235, var(--divide-opacity));
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+

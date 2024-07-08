@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
 import AppRoutes from './routes/AppRoutes'; // Import AppRoutes from routes.js
+
 const App = () => {
   const [results, setResults] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);

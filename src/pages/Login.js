@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import axios from 'axios'; 
-import ConfirmationPage from './ConfirmationPage'; 
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+import ConfirmationPage from './ConfirmationPage';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
-const LoginPage = ({ onLogin }) => {
+const LoginPage = ({ onLogin, redirectPath }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
@@ -21,7 +20,7 @@ const LoginPage = ({ onLogin }) => {
         onLogin();
         setIsConfirmed(true);
         setTimeout(() => {
-          navigate('/');
+          navigate(redirectPath); // Redirige vers le chemin spécifié après une connexion réussie
         }, 1000);
       } else {
         setError('Nom d\'utilisateur ou mot de passe incorrect');
@@ -91,7 +90,7 @@ const LoginPage = ({ onLogin }) => {
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeSlashIcon className="h-5 w-5" aria-hidden="true" />
+                      <EyeIcon className="h-5 w-5" aria-hidden="true" />
                     ) : (
                       <EyeSlashIcon className="h-5 w-5" aria-hidden="true" />
                     )}

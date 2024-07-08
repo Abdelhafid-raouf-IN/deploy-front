@@ -28,6 +28,7 @@ const Side = styled.div`
   left: 100;
   padding: 20px;
   color: #000000;
+  overflow-y: auto;
 
   .header {
     display: flex;
@@ -167,20 +168,20 @@ const Side = styled.div`
     color: #1F2937; /* Gray-800 text color */
   }
 `;
+
 const Sidebar = () => {
   const [apis, setApis] = useState([]);
-  const [openApi, setOpenApi] = useState(null);
 
   useEffect(() => {
     const loadApis = async () => {
       try {
-        const response = await axios.get('http://localhost:9090/api/auth/apis'); // Remplacez avec l'URL correcte de votre backend
+        const response = await axios.get('http://localhost:9090/api/docs'); // Remplacez avec l'URL correcte de votre backend
         const apiData = response.data.map(async (apiDoc) => {
           const client = await SwaggerClient(apiDoc.url);
           return {
             name: apiDoc.name,
             client,
-            baseUrl: apiDoc.baseUrl
+            baseUrl: apiDoc.baseUrl,
           };
         });
         const resolvedApiData = await Promise.all(apiData);
@@ -192,34 +193,28 @@ const Sidebar = () => {
     loadApis();
   }, []);
 
-  const toggleApi = (apiName) => {
-    setOpenApi(openApi === apiName ? null : apiName);
-  };
-
   return (
     <Side>
       {apis.map((api) => (
         <div className="api-group" key={api.name}>
-          <div className="api-header" onClick={() => toggleApi(api.name)}>
+          <div className="api-header">
             {api.name}
           </div>
-          {openApi === api.name && (
-            <div className="endpoints">
-              {Object.keys(api.client.spec.paths).map((endpoint) =>
-                Object.keys(api.client.spec.paths[endpoint]).map((method) => (
-                  <div className="endpoint" key={`${endpoint}-${method}`}>
-                    {method === 'get' && <span className="label get-label">GET</span>}
-                    {method === 'post' && <span className="label post-label">POST</span>}
-                    {method === 'put' && <span className="label put-label">PUT</span>}
-                    {method === 'patch' && <span className="label patch-label">PATCH</span>}
-                    {method === 'delete' && <span className="label delete-label">DELETE</span>}
-                    {method === 'options' && <span className="label options-label">OPTIONS</span>}
-                    <span>{endpoint}</span>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
+          <div className="endpoints">
+            {Object.keys(api.client.spec.paths).map((endpoint) =>
+              Object.keys(api.client.spec.paths[endpoint]).map((method) => (
+                <div className="endpoint" key={`${endpoint}-${method}`}>
+                  {method === 'get' && <span className="label get-label">GET</span>}
+                  {method === 'post' && <span className="label post-label">POST</span>}
+                  {method === 'put' && <span className="label put-label">PUT</span>}
+                  {method === 'patch' && <span className="label patch-label">PATCH</span>}
+                  {method === 'delete' && <span className="label delete-label">DELETE</span>}
+                  {method === 'options' && <span className="label options-label">OPTIONS</span>}
+                  <span>{endpoint}</span>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       ))}
     </Side>
