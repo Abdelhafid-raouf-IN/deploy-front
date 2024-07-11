@@ -2,71 +2,46 @@ pipeline {
     agent any
 
     environment {
-        // Set the NVM directory and load NVM
-        NVM_DIR = "$HOME/.nvm"
-        PATH = "${NVM_DIR}/versions/node/v20.11.1/bin:$PATH"
+        // Define environment variables if needed
+        FRONTEND_REPO = 'https://github.com/yourusername/frontend-repo.git'
     }
 
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                // Checkout the code from the repository
-                checkout scm
+                git url: "${env.FRONTEND_REPO}", branch: 'main'
             }
         }
+
         stage('Install Dependencies') {
             steps {
-                // Install project dependencies using npm
-                script {
-                    sh '''
-                    source $NVM_DIR/nvm.sh
-                    if [ -f package-lock.json ]; then
-                        npm ci
-                    else
-                        npm install
-                    fi
-                    '''
-                }
+                sh 'npm install'
             }
         }
-        stage('Run Tests') {
+
+        stage('Build Frontend') {
             steps {
-                // Run the project tests
-                script {
-                    sh 'source $NVM_DIR/nvm.sh && npm test'
-                }
+                sh 'npm run build'
             }
         }
-        stage('Build') {
-            steps {
-                // Build the project
-                script {
-                    sh 'source $NVM_DIR/nvm.sh && npm run build'
-                }
-            }
-        }
+
         stage('Archive Artifacts') {
             steps {
-                // Archive the build artifacts
-                archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'build/**/*', allowEmptyArchive: true
             }
         }
+
         stage('Deploy') {
             steps {
-                // Deployment step (e.g., upload to a server or cloud provider)
-                // You can add your deployment script here
-                echo 'Deployment step'
+                // Add deployment steps here, e.g., copy files to the server, deploy to a cloud platform, etc.
+                echo 'Deploying the application...'
             }
         }
     }
 
     post {
-        always {
-            // Clean up workspace
-            cleanWs()
-        }
         success {
-            echo 'Build completed successfully!'
+            echo 'Build succeeded!'
         }
         failure {
             echo 'Build failed!'
