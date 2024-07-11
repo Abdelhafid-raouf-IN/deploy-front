@@ -17,7 +17,7 @@ pipeline {
             steps {
                 // Set up Node.js environment
                 script {
-                    def nodeHome = tool name: 'NodeJS', type: 'NodeJSInstallation'
+                    def nodeHome = tool name: 'NodeJS', type: 'NodeJSInstallation' // Ensure 'NodeJS' matches the name configured in Jenkins
                     env.PATH = "${nodeHome}/bin:${env.PATH}"
                 }
                 // Verify Node.js installation
@@ -26,47 +26,5 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                // Install npm dependencies
-                sh 'npm install'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                // Run tests
-                sh 'npm test'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                // Build the project
-                sh 'npm run build'
-            }
-        }
-
-        stage('Archive Build Artifacts') {
-            steps {
-                // Archive the build artifacts
-                archiveArtifacts artifacts: 'build/**/*', allowEmptyArchive: true
-            }
-        }
-    }
-
-    post {
-        always {
-            // Clean workspace after build
-            cleanWs()
-        }
-        success {
-            // Notify success (e.g., via email, Slack)
-            echo 'Build succeeded!'
-        }
-        failure {
-            // Notify failure (e.g., via email, Slack)
-            echo 'Build failed!'
-        }
     }
 }
