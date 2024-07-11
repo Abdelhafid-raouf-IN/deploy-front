@@ -14,6 +14,7 @@ import TestResultsTable from '../pages/TestResultsTable ';
 import HealthStatus from '../pages/Chart'
 import '../style/styles.css';
 import MetricsDashboard from '../pages/MetricsDashboard';
+import AdminUserManagement from '../pages/AdminUserManagement ';
 
 export const AuthenticatedApp = ({ results, setResults, onLogout }) => {
   const location = useLocation();
@@ -43,7 +44,7 @@ export const AuthenticatedApp = ({ results, setResults, onLogout }) => {
           <Route path="/testresults" element={<TestResultsTable />} />
           <Route path="/health" element={<HealthStatus />} />
           <Route path="/metrice" element={<MetricsDashboard />} />
-
+          <Route path="/admin" element={<AdminUserManagement />} />
 
 
 
