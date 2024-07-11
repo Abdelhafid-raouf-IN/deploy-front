@@ -4,6 +4,15 @@ pipeline {
     environment {
         NODE_VERSION = '20'
     }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the code from the repository
+                git 'https://github.com/Abdelhafid-raouf-IN/deploy-front.git'
+            }
+        }
+
         stage('Setup Node.js') {
             steps {
                 // Set up Node.js environment
@@ -37,5 +46,27 @@ pipeline {
                 sh 'npm run build'
             }
         }
+
+        stage('Archive Build Artifacts') {
+            steps {
+                // Archive the build artifacts
+                archiveArtifacts artifacts: 'build/**/*', allowEmptyArchive: true
+            }
+        }
     }
 
+    post {
+        always {
+            // Clean workspace after build
+            cleanWs()
+        }
+        success {
+            // Notify success (e.g., via email, Slack)
+            echo 'Build succeeded!'
+        }
+        failure {
+            // Notify failure (e.g., via email, Slack)
+            echo 'Build failed!'
+        }
+    }
+}
