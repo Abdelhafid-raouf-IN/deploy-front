@@ -15,11 +15,6 @@ pipeline {
 
         stage('Setup Node.js') {
             steps {
-                // Set up Node.js environment
-                script {
-                    def nodeHome = tool name: 'NodeJS', type: 'NodeJSInstallation' // Ensure 'NodeJS' matches the name configured in Jenkins
-                    env.PATH = "${nodeHome}/bin:${env.PATH}"
-                }
                 // Verify Node.js installation
                 sh 'node --version'
                 sh 'npm --version'
