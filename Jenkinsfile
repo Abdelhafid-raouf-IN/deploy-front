@@ -24,19 +24,6 @@ pipeline {
                 sh 'npm run build'
             }
         }
-
-        stage('Archive Artifacts') {
-            steps {
-                archiveArtifacts artifacts: 'build/**/*', allowEmptyArchive: true
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                // Add deployment steps here, e.g., copy files to the server, deploy to a cloud platform, etc.
-                echo 'Deploying the application...'
-            }
-        }
     }
 
     post {
