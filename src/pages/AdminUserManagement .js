@@ -117,18 +117,19 @@ const AdminUserManagement = () => {
             </div>
 
             <div>
-            <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-                >
-                  Sign in
-                </button>
+              <button
+                type="submit"
+                className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+              >
+                Sign in
+              </button>
             </div>
           </form>
         </div>
       </div>
     );
   }
+
   return (
     <div className="p-8 bg-white shadow-md rounded-md">
       <h2 className="text-2xl font-bold mb-4">User Management</h2>
@@ -160,32 +161,42 @@ const AdminUserManagement = () => {
 
       <div>
         <h3 className="text-xl font-semibold mb-2">User List</h3>
-        <ul className="space-y-4">
-          {users.map(user => (
-            <li key={user.id} className="flex justify-between items-center p-2 bg-gray-100 rounded-md">
-              <div>
-                <p className="font-medium">{user.username}</p>
-              </div>
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => {
-                    setEditingUser(user);
-                    setEditForm({ username: user.username, password: '' });
-                  }}
-                  className="text-blue-600 hover:text-blue-500"
-                >
-                  <PencilIcon className="h-5 w-5" aria-hidden="true" />
-                </button>
-                <button
-                  onClick={() => handleDeleteUser(user.id)}
-                  className="text-red-600 hover:text-red-500"
-                >
-                  <TrashIcon className="h-5 w-5" aria-hidden="true" />
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-gray-100 border border-gray-300 rounded-md">
+            <thead>
+              <tr className="bg-gray-200 text-left text-gray-600">
+                <th className="py-2 px-4 border-b">Username</th>
+                <th className="py-2 px-4 border-b text-center">Status</th>
+                <th className="py-2 px-4 border-b text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.id}>
+                  <td className="py-2 px-4 border-b">{user.username}</td>
+                  <td className="py-2 px-4 border-b text-center">{user.isActive ? 'Active' : 'Inactive'}</td>
+                  <td className="py-2 px-4 border-b text-center">
+                    <button
+                      onClick={() => {
+                        setEditingUser(user);
+                        setEditForm({ username: user.username, password: '' });
+                      }}
+                      className="text-yellow-600 hover:text-yellow-500"
+                    >
+                      <PencilIcon className="h-6 w-6 inline" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteUser(user.id)}
+                      className="text-red-600 hover:text-red-500 ml-2"
+                    >
+                      <TrashIcon className="h-6 w-6 inline" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {editingUser && (
@@ -200,7 +211,7 @@ const AdminUserManagement = () => {
           />
           <input
             type="password"
-            placeholder="Password (leave blank to keep current password)"
+            placeholder="New Password (leave blank if not changing)"
             value={editForm.password}
             onChange={(e) => setEditForm({ ...editForm, password: e.target.value })}
             className="block w-full rounded-md border border-gray-300 py-2 px-3 mb-2 text-gray-900 shadow-sm placeholder-gray-400"
@@ -217,5 +228,5 @@ const AdminUserManagement = () => {
     </div>
   );
 };
-
+  
 export default AdminUserManagement;
