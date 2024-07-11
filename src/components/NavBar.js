@@ -43,6 +43,8 @@ const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotif
     { name: 'Test-Api', href: '/api-test', icon: <ArrowPathIcon className="h-6 w-6" />, current: false },
     { name: 'Test-Results', href: '/testresults', icon: <DocumentTextIcon className="h-6 w-6" />, current: false },
     { name: 'Health', href: '/health', icon: <HeartIcon className="h-6 w-6" />, current: false },
+    { name: 'Metrice', href: '/metrice', icon: <HeartIcon className="h-6 w-6" />, current: false },
+
 
   ];
 

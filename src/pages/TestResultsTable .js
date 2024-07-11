@@ -115,7 +115,7 @@ const TestResultsTable = () => {
               <option value="Failed">Failed</option>
             </select>
             <img
-              src="/images/excel-logo.png"  // Assurez-vous que le chemin est correct
+              src="/images/excel-logo.png" 
               alt="Export to Excel"
               onClick={exportToExcel}
               className="w-10 h-10 cursor-pointer ml-2"

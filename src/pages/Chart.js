@@ -72,8 +72,7 @@ function HealthStatus() {
     fetchHealthData();
 
     // Set up polling every 10 seconds
-    const intervalId = setInterval(fetchHealthData, 10000);  // 10000 ms = 10 seconds
-
+    const intervalId = setInterval(fetchHealthData, 10);  // 10000 ms = 10 seconds
     // Cleanup on component unmount
     return () => clearInterval(intervalId);
   }, []);
