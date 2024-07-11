@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        // Set the NVM directory and load NVM
+        NVM_DIR = "$HOME/.nvm"
+        PATH = "${NVM_DIR}/versions/node/v20.11.1/bin:$PATH"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -12,24 +18,31 @@ pipeline {
             steps {
                 // Install project dependencies using npm
                 script {
-                    if (fileExists('package-lock.json')) {
-                        sh 'npm ci'
-                    } else {
-                        sh 'npm install'
-                    }
+                    sh '''
+                    source $NVM_DIR/nvm.sh
+                    if [ -f package-lock.json ]; then
+                        npm ci
+                    else
+                        npm install
+                    fi
+                    '''
                 }
             }
         }
         stage('Run Tests') {
             steps {
                 // Run the project tests
-                sh 'npm test'
+                script {
+                    sh 'source $NVM_DIR/nvm.sh && npm test'
+                }
             }
         }
         stage('Build') {
             steps {
                 // Build the project
-                sh 'npm run build'
+                script {
+                    sh 'source $NVM_DIR/nvm.sh && npm run build'
+                }
             }
         }
         stage('Archive Artifacts') {
