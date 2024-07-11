@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Define environment variables if needed
-        FRONTEND_REPO = 'https://github.com/yourusername/frontend-repo.git'
+        FRONTEND_REPO = 'https://github.com/Abdelhafid-raouf-IN/deploy-front.git'
     }
 
     stages {
