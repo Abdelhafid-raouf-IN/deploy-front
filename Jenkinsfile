@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         NODE_VERSION = '20'
+        PATH = "/root/.nvm/versions/node/v20.11.1/bin:${env.PATH}"  // Assurez-vous que ce chemin est correct
     }
 
     stages {
@@ -15,11 +16,16 @@ pipeline {
 
         stage('Setup Node.js') {
             steps {
-                // Verify Node.js installation
+                // Print the PATH and which node and npm
+                sh 'echo $PATH'
+                sh 'which node'
+                sh 'which npm'
+                // Verify Node.js and npm installation
                 sh 'node --version'
                 sh 'npm --version'
             }
         }
 
+        // Add more stages as needed
     }
 }
