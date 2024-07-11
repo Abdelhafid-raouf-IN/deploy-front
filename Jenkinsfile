@@ -1,31 +1,62 @@
 pipeline {
     agent any
 
-    environment {
-        NODE_VERSION = '20'
-        PATH = "/root/.nvm/versions/node/v20.11.1/bin:${env.PATH}"  // Assurez-vous que ce chemin est correct
-    }
-
     stages {
         stage('Checkout') {
             steps {
                 // Checkout the code from the repository
-                git branch: 'main', url: 'https://github.com/Abdelhafid-raouf-IN/deploy-front.git'
+                checkout scm
             }
         }
-
-        stage('Setup Node.js') {
+        stage('Install Dependencies') {
             steps {
-                // Print the PATH and which node and npm
-                sh 'echo $PATH'
-                sh 'which node'
-                sh 'which npm'
-                // Verify Node.js and npm installation
-                sh 'node --version'
-                sh 'npm --version'
+                // Install project dependencies using npm
+                script {
+                    if (fileExists('package-lock.json')) {
+                        sh 'npm ci'
+                    } else {
+                        sh 'npm install'
+                    }
+                }
             }
         }
+        stage('Run Tests') {
+            steps {
+                // Run the project tests
+                sh 'npm test'
+            }
+        }
+        stage('Build') {
+            steps {
+                // Build the project
+                sh 'npm run build'
+            }
+        }
+        stage('Archive Artifacts') {
+            steps {
+                // Archive the build artifacts
+                archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Deployment step (e.g., upload to a server or cloud provider)
+                // You can add your deployment script here
+                echo 'Deployment step'
+            }
+        }
+    }
 
-        // Add more stages as needed
+    post {
+        always {
+            // Clean up workspace
+            cleanWs()
+        }
+        success {
+            echo 'Build completed successfully!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
     }
 }
