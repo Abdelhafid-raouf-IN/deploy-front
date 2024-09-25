@@ -44,8 +44,8 @@ function HealthStatus() {
 
         const diskSpaceDetails = data.components.diskSpace?.details || {};
         const totalSpaceBytes = diskSpaceDetails.total || 0;
-        const freeSpaceBytes = diskSpaceDetails.free || 0;
-        const usedSpaceBytes = totalSpaceBytes - freeSpaceBytes;
+        const freeSpaceBytes  = diskSpaceDetails.free || 0;
+        const usedSpaceBytes  = totalSpaceBytes - freeSpaceBytes;
 
         const bytesToGigabytes = (bytes) => (bytes / (1024 * 1024 * 1024)).toFixed(2);
 
@@ -155,3 +155,5 @@ function HealthStatus() {
 }
 
 export default HealthStatus;
+
+

@@ -20,6 +20,7 @@
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.3",
     "cross-env": "^7.0.3",
+    "emailjs-com": "^3.2.0",
     "faker": "^6.6.6",
     "font-awesome": "^4.7.0",
     "json-schema-faker": "^0.5.6",
@@ -74,4 +75,4 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4"
   }
-} 
+}

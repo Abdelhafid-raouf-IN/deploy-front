@@ -3,8 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon } from '@heroicons/react/24/outline';
 import { HomeIcon, ListBulletIcon, ArrowPathIcon, DocumentTextIcon, HeartIcon } from '@heroicons/react/24/outline'
 import '../style/styles.css'
-import { Link } from 'react-router-dom';  // Importation manquante
-
+import { Link } from 'react-router-dom'; 
 
 const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotification }) => {
   const [notifications, setNotifications] = useState([]);
@@ -36,7 +35,6 @@ const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotif
       }, 1000);
     });
   };
-
   const navigation = [
     { name: 'Check-Apis', href: '/check-apis', icon: <HomeIcon className="h-6 w-6" />, current: false },
     { name: 'Test-All Apis', href: '/testallapis', icon: <ListBulletIcon className="h-6 w-6" />, current: false },
@@ -48,15 +46,11 @@ const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotif
 
 
   ];
-
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
   }
-
-  // State to track scroll position
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Function to handle scroll event
   const handleScroll = () => {
     const scrollPosition = window.scrollY;
     if (scrollPosition > 0) {
@@ -66,7 +60,6 @@ const Navbar = ({ isAuthenticated, onLogout, testPassNotification, testFailNotif
     } 
   };
 
-  // Attach scroll event listener when component mounts
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {

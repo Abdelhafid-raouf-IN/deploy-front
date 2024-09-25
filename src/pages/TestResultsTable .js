@@ -52,15 +52,15 @@ const TestResultsTable = () => {
 
   useEffect(() => {
     let results = testResults.filter((result) =>
-      result.apiName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      result.endpoint.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      result.method.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      result.status.toString().includes(searchTerm) ||
-      result.startTime.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      result.stopTime.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      result.localDate.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      result.environment.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      result.branch.toLowerCase().includes(searchTerm.toLowerCase())
+      result.apiName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      result.endpoint?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      result.method?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      result.status?.toString().includes(searchTerm) ||
+      result.startTime?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      result.stopTime?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      result.localDate?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      result.environment?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      result.branch?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (filterStatus === 'Passed') {
